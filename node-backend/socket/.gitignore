@@ -1,0 +1,10 @@
+node_modules/
+# 해당 폴더를 다 무시한다는 뜻
+package-lock.json
+# 하나의 파일을 무시한다는 뜻
+
+# PS C:\Users\SBA_USER\desktop\github\SeSac_ys_0912_1\1012_node-backend\1017_02-form> npm i express ejs 설치
+# PS C:\Users\SBA_USER\desktop\github\SeSac_ys_0912_1> cd .\1012_node-backend\ 
+# PS C:\Users\SBA_USER\desktop\github\SeSac_ys_0912_1\1012_node-backend> cd .\js-hard\   
+# PS C:\Users\SBA_USER\desktop\github\SeSac_ys_0912_1\1012_node-backend\js-hard> .\async.js
+# PS C:\Users\SBA_USER\desktop\github\SeSac_ys_0912_1\1012_node-backend\js-hard> ********* node .\async.js  
