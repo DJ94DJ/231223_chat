@@ -1,7 +1,8 @@
 import "../styles/chat.css";
-import { useCallback, useEffect, useState, useMemo } from "react";
+import { useCallback, useEffect, useState, useMemo, useRef } from "react";
 import Chat from "./tools/Chat";
 import Notice from "./tools/Notice";
+import useScrollStyle from "./tools/useScrollStyle";
 import io from "socket.io-client";
 import { getSvgPath } from "figma-squircle";
 
@@ -18,10 +19,102 @@ const socket = io.connect("http://localhost:8000", { autoConnect: false });
 export default function Chatting3() {
   const [msgInput, setMsgInput] = useState("");
   const [userIdInput, setUserIdInput] = useState("");
-  const [chatList, setChatList] = useState([]);
+  // const [chatList, setChatList] = useState([]);
   const [userId, setUserId] = useState(null);
   const [userList, setUserList] = useState({});
   const [dmTo, setdmTo] = useState("all");
+
+  const scrollRef = useRef(null);
+  const handleScroll = useScrollStyle(scrollRef);
+
+  const ref = useRef();
+  useScrollStyle(ref);
+
+  useEffect(() => {
+    if (userId) {
+      window.addEventListener("scroll", handleScroll);
+      return () => {
+        window.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, [userId, handleScroll]);
+
+  const [chatList, setChatList] = useState([
+    {
+      type: "my",
+      content: "안녕?",
+    },
+    {
+      type: "my",
+      content:
+        "안녕 텍스트로,  시각 디자인 프로젝트 모형의 채움 글로도 이용된다. ?",
+    },
+    {
+      type: "my",
+      content: "안녕? 반가워요!반가워요!",
+    },
+    {
+      type: "my",
+      content: "안녕? 모형의 채움 글로도 이용된다. ",
+    },
+    {
+      type: "my",
+      content: "안녕? 텍스트로, 프로젝트 모형의 채움 글로도 이용된다. ",
+    },
+    {
+      type: "my",
+      content: "안녕? 텍스트로,",
+    },
+    {
+      type: "other",
+      content: "응 안녕?",
+    },
+    {
+      type: "other",
+      content: "응 안녕?",
+    },
+    {
+      type: "other",
+      content: "응 안녕?",
+    },
+    {
+      type: "other",
+      content: "응 안녕?",
+    },
+    {
+      type: "other",
+      content: "응 안녕?",
+    },
+    {
+      type: "other",
+      content: "응 안녕?",
+    },
+    {
+      type: "other",
+      content: "응 안녕?",
+    },
+    {
+      type: "other",
+      content: "응 안녕?",
+    },
+    {
+      type: "other",
+      content: "응 안녕?",
+    },
+    {
+      type: "other",
+      content: "응 안녕?",
+    },
+    {
+      type: "other",
+      content: "응 안녕?",
+    },
+
+    {
+      type: "notice",
+      content: "~~~~~~님이 입장하셨습니다.",
+    },
+  ]);
 
   const initSocketConnect = () => {
     console.log("connected", socket.connected);
@@ -40,7 +133,12 @@ export default function Chatting3() {
     socket.on("userList", (res) => {
       setUserList(res);
     });
-  }, []);
+
+    if (scrollRef.current) {
+      // 추가
+      scrollRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [chatList]);
 
   const userListOption = useMemo(() => {
     // [<option></option>]
@@ -94,8 +192,11 @@ export default function Chatting3() {
   }, [chatList]);
 
   // 메시지 보내기
-  const sendMsg = () => {
-    if (msgInput !== "") {
+  const sendMsg = (event) => {
+    console.log("Key pressed: ", event.key); // 어떤 키가 눌렸는지 확인합니다.
+
+    if (event.key === "Enter" && msgInput !== "") {
+      console.log("Message is being sent"); // 메시지가 전송되는 것을 확인합니다.
       socket.emit("sendMsg", { userId: userId, msg: msgInput, dm: dmTo });
       setMsgInput("");
     }
@@ -137,12 +238,13 @@ export default function Chatting3() {
               {userId ? (
                 <>
                   <div>{userId}님 환영합니다.</div>
-                  <div className="chat-container">
+                  <div ref={ref} className="chat-container">
                     {chatList.map((chat, i) => {
                       if (chat.type === "notice")
                         return <Notice key={i} chat={chat} />;
                       else return <Chat key={i} chat={chat} />;
                     })}
+                    <div ref={scrollRef} /> {/* 추가된 부분 */}
                   </div>
                   <div className="input-container">
                     <select
@@ -153,22 +255,28 @@ export default function Chatting3() {
                       {userListOption}
                     </select>
                     <input
+                      className="input-chatbar"
                       type="text"
                       value={msgInput}
+                      onKeyDown={sendMsg}
                       onChange={(e) => setMsgInput(e.target.value)}
                     />
-                    <button onClick={sendMsg}>전송</button>
+                    {/* <button onClick={sendMsg}>전송</button> */}
                   </div>
                 </>
               ) : (
                 <>
                   <div className="input-container">
                     <input
+                      className="input-id"
                       type="text"
                       value={userIdInput}
+                      placeholder="사용할 대화명를 입력해 주세요."
                       onChange={(e) => setUserIdInput(e.target.value)}
                     />
-                    <button onClick={entryChat}>입장</button>
+                    <button className="input-id-button" onClick={entryChat}>
+                      입장
+                    </button>
                   </div>
                 </>
               )}
@@ -205,7 +313,7 @@ export default function Chatting3() {
             width: 700,
             height: 700,
             borderRadius: 60,
-            backgroundColor: "rgba(37, 37, 60, 0.2)",
+            backgroundColor: "rgba(37, 37, 60, 0.15)",
             filter: "blur(20px)",
             // filter: "drop-shadow(0rem 0rem 50px red)",
           }}
