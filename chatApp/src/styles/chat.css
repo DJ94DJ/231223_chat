@@ -7,17 +7,20 @@ body {
   );
   background-repeat: no-repeat;
   background-attachment: fixed;
+  overflow: visible;
 }
 
 .center {
   z-index: 3;
   background-color: rgb(255, 255, 255, 0);
   overflow-y: auto;
+  overflow: visible;
 }
 
 .backdrop-container {
   position: relative;
   background-color: rgb(255, 255, 255, 0);
+  overflow: visible;
 }
 
 .backdrop-container2 {
@@ -27,6 +30,8 @@ body {
   transform: translate(-50%, -50%);
   background-color: rgb(255, 255, 255, 0);
   z-index: 2;
+  overflow: visible;
+ 
 }
 
 .backdrop-container-shadow1 {
@@ -35,6 +40,7 @@ body {
   left: 48.5%;
   transform: translate(-50%, -50%);
   z-index: 1;
+  overflow: visible;
 }
 
 .backdrop-container-shadow2 {
@@ -43,6 +49,8 @@ body {
   left: 50.5%;
   transform: translate(-50%, -50%);
   z-index: 0;
+  overflow: visible;
+
 }
 
 .app-container {
@@ -50,6 +58,7 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  overflow: visible;
 }
 
 .chat-container {
@@ -59,6 +68,7 @@ body {
   /* background-color: rgb(255, 255, 255, 0); */
   /* background-color: dodgerblue; */
   padding: 10px 15px 0;
+  
 }
 
 .chat-container::after {
@@ -114,11 +124,11 @@ body {
   margin-top: 6px;
 }
 
-.input-container {
+/* .input-container {
   width: 320px;
   display: flex;
   justify-content: space-between;
-}
+} */
 
 .input-container > input {
   flex-grow: 1;
@@ -129,9 +139,17 @@ body {
   font-weight: bold;
 }
 
-.input-container {
+.id-input-container {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -166,6 +184,121 @@ body {
     -8px -8px 15px 0px rgba(255, 255, 255, 1);
   width: 150px;
   padding: 15px;
+}
+
+.input-chatbar {
+  border: 0;
+  display: inline-block;
+  padding: 8px 18px;
+  border-radius: 15px;
+  box-shadow: 1px 3px 7px 0.1px rgb(0, 0, 0, 0.6) inset;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: medium;
+  max-width: 300px;
+  /* background-color: aqua; */
+}
+
+input:focus {
+  outline: 0px solid black;
+  background-color:  rgb(155, 195, 255);
+}
+
+.input-txt-send-button {
+  border: 0;
+  display: inline-block;
+  padding: 8px 18px;
+  border-radius: 15px;
+  background-color: rgba(0, 0, 0, 0);
+  font-size: medium;
+  box-shadow: 1px 3px 7px 0.1px rgb(0, 0, 0, 0.6);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+
+
+
+select {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.user-list {
+  border: 0;
+  display: inline-block;
+  padding: 8px 18px;
+  border-radius: 15px;
+  color: black;
+  box-shadow: 1px 3px 7px 0.1px rgb(0, 0, 0, 0.6);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+
+.user-list option {
+  background: black;
+  color: #fff;
+  padding: 3px 0;
+}
+
+.selectBox {
+  position: relative;
+  display: inline-block;
+  font-family: Arial, sans-serif;
+}
+
+.label {
+  border: 0;
+  display: inline-block;
+  padding: 8px 18px;
+  border-radius: 15px;
+  font-size: medium;
+  background-color: rgb(155, 195, 255);
+  color: black;
+  box-shadow: 1px 3px 7px 0.1px rgb(0, 0, 0, 0.6) inset;
+  white-space: nowrap;
+  overflow: hidden;
+ 
+}
+
+.optionList {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 999 !important;
+  width: 100%;
+  padding: 0;
+  margin: 2px 0 0;
+  border: 0;
+  display: inline-block;
+  border-radius: 15px;
+  background-color: rgb(247, 247, 247);
+  /* color: black; */
+  box-shadow: 1px 3px 7px 0.1px rgb(0, 0, 0, 0.6);
+  white-space: nowrap;
+  overflow: hidden;
+  list-style: none;
+}
+
+.optionItem {
+  padding: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.optionItem:hover {
+  background-color: rgb(155, 195, 255);
+}
+
+/* 옵션 목록이 열렸을 때와 닫혔을 때의 스타일링 */
+.optionList.open {
+  display: block;
+}
+
+.optionList.closed {
+  display: none;
 }
 
 /* .chat-container .list:nth-child(1) > .content {
