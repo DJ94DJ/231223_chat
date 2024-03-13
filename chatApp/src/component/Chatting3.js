@@ -71,6 +71,16 @@ export default function Chatting3() {
    }
  }, [chatList]);
 
+ // 
+ useEffect(() => {
+  if (scrollRef.current) {
+    const { scrollHeight, clientHeight } = scrollRef.current;
+    // 스크롤 위치를 맨 아래로 설정하기 전에, 스무스 스크롤링 효과를 적용
+    scrollRef.current.style.scrollBehavior = 'smooth';
+    scrollRef.current.scrollTop = scrollHeight - clientHeight;
+  }
+}, [chatList]);
+
  const userListOption = useMemo(
    () => Object.keys(userList).filter((key) => key !== userId).map((key) => <option key={key} value={key}>{userList[key]}</option>),
    [userList, userId]
