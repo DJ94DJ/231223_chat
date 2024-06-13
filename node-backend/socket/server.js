@@ -59,12 +59,15 @@ io.on("connection", (socket) => {
 
   // [실습 3-3] 퇴장시키기
   socket.on("disconnect", () => {
-    io.emit("notice", { msg: `${userIdArr[socket.id]}님이 퇴장하셨습니다.` });
-    delete userIdArr[socket.id];
+    const leavingUserId = userIdArr[socket.id]; // 퇴장하는 사용자의 userId 가져오기
+    if (leavingUserId) { // 퇴장하는 사용자가 있을 경우에만 실행
+      io.emit("notice", { msg: `${leavingUserId}님이 퇴장하셨습니다.` }); // 해당 userId로 퇴장 알림
+      delete userIdArr[socket.id]; // 사용자 정보 삭제
+      updateUserList();
+    }
     console.log(userIdArr);
-    //*
-    updateUserList();
   });
+
 
   // 메시지 보내기
   socket.on("sendMsg", (res) => {

@@ -63,11 +63,11 @@ body {
 
 .chat-container {
   width: 500px;
-  height: 500px;
+  height: 450px;
   overflow-y: auto;
   /* background-color: rgb(255, 255, 255, 0); */
   /* background-color: dodgerblue; */
-  padding: 10px 15px 0;
+  padding: 0px 15px 0;
   
 }
 
@@ -90,16 +90,20 @@ body {
 }
 
 .chat-container .list {
-  margin-top: 12px;
+  /* margin-top: 12px; */
+  height: 50px;
+
 }
 
 .list > .content {
   display: inline-block;
   padding: 8px 18px;
+  margin:  7px 0px;
   border-radius: 15px;
   box-shadow: 1px 3px 7px 0.1px rgb(0, 0, 0, 0.6) inset;
   white-space: nowrap;
   overflow: hidden;
+  
 }
 
 .chat-container .my-chat {
@@ -119,9 +123,23 @@ body {
 
 .chat-container .notice {
   font-size: 12px;
+  line-height : 50px;
   color: rgb(68, 68, 68);
   text-align: center;
-  margin-top: 6px;
+  height: 50px;
+  
+  /* background-color: aqua; */
+  /* padding: 28px 0px 0px 0px; */
+  margin: 0px;
+
+  /* display: inline-block; */
+  padding: 0px;
+  
+  border-radius: 15px;
+  /* box-shadow: 1px 3px 7px 0.1px rgb(0, 0, 0, 0.6) inset; */
+  white-space: nowrap;
+  overflow: hidden;
+  
 }
 
 /* .input-container {

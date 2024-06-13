@@ -5,6 +5,7 @@ import Notice from "./tools/Notice";
 
 const ChatContainer = ({ chatList, scrollRef }) => {
   return (
+    <>
     <div ref={scrollRef} className="chat-container">
       {chatList.map((chat, i) => {
         if (chat.type === "notice")
@@ -13,6 +14,8 @@ const ChatContainer = ({ chatList, scrollRef }) => {
       })}
       <div ref={scrollRef} /> {/* 추가된 부분 */}
     </div>
+    <br/>
+    </>
   );
 };
 

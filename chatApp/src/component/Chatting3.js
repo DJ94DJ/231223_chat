@@ -1,7 +1,6 @@
 //기존 코드
 import "../styles/chat.css";
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import io from "socket.io-client";
 import useScrollStyle from "./tools/useScrollStyle";
 import { getSvgPath } from "figma-squircle";
 import Backdrop from './Backdrop';
@@ -35,11 +34,9 @@ export default function Chatting3() {
  // 스크롤 스타일링 및 위치 조정을 위한 사용자 정의 훅 (가정)
  const handleScroll = useScrollStyle(scrollRef);
  const socket = useSocket()
-
-
+ 
 
  useEffect(() => {
-
    const eventListeners = {
      error: (res) => alert(res.msg),
      entrySuccess: (res) => setUserId(res.userId),
@@ -81,6 +78,45 @@ export default function Chatting3() {
   }
 }, [chatList]);
 
+useEffect(() => {
+  const handleWheel = (e) => {
+    e.preventDefault(); // 기본 스크롤 동작 방지
+    const { deltaY } = e;
+    
+    const scrollAmount = 50;
+    const endScrollAmount = 50;
+
+    if (scrollRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
+      // 맨 끝과 맨 위에서 특별 스크롤 적용을 위한 조건 확인
+      const isAtEnd = scrollTop + clientHeight >= scrollHeight;
+      const isAtTop = scrollTop <= 0;
+      const scrollingUp = deltaY < 0;
+
+      // 맨 끝에서 위로 스크롤하거나 맨 위에서 아래로 스크롤하는 경우
+      if ((isAtEnd && scrollingUp) || (isAtTop && !scrollingUp)) {
+        scrollRef.current.scrollBy({ top: scrollingUp ? -endScrollAmount : endScrollAmount });
+        console.log("특별 스크롤!")
+      } else {
+        // 그 외의 경우에는 기본 스크롤 거리 적용
+        scrollRef.current.scrollBy({ top: deltaY > 0 ? scrollAmount : -scrollAmount });
+        console.log("기본 스크롤 작동")
+      }
+    }
+  };
+
+  // 'wheel' 이벤트에 { passive: false } 옵션을 추가하여 이벤트 리스너 등록
+  window.addEventListener('wheel', handleWheel, { passive: false });
+
+  // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+  return () => {
+    window.removeEventListener('wheel', handleWheel);
+  };
+}, []);
+
+
+
+
  const userListOption = useMemo(
    () => Object.keys(userList).filter((key) => key !== userId).map((key) => <option key={key} value={key}>{userList[key]}</option>),
    [userList, userId]
@@ -99,6 +135,7 @@ export default function Chatting3() {
    socket.emit('entry', { userId: userIdInput });
  }, [userIdInput]);
  //
+ 
 
   return (
     <>
@@ -124,6 +161,7 @@ export default function Chatting3() {
                 <>
                   <div>{userId}님 환영합니다.</div>
                   <ChatContainer chatList={chatList} scrollRef={scrollRef} />
+
                   <div className="input-container">
                   <UserList userList={userList} userId={userId} dmTo={dmTo} setDmTo={setDmTo} />
                     <MessageInput msgInput={msgInput} setMsgInput={setMsgInput} sendMsg={sendMsg} />
